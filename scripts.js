@@ -63,6 +63,35 @@ Promise.all([
         }
     }
 
+    // TOOLTIPS
+    tooltip = d3.select("#holder")
+        .append("div")
+        .attr("class", "tooltip")
+        .attr("id", "tooltip")
+        .style("opacity", 0)
+
+    // A function that change this tooltip when the user hover a point.
+    // Its opacity is set to 1: we can now see it.
+    let mouseover = function (e, d) {
+        tooltip
+            .style("opacity", 0.9)
+        tooltip
+            .html(`${d.data.name}`)
+            .attr("data-value", `${d.data.value}`)
+    }
+
+    let mousemove = function (e, d) {
+        tooltip
+            .html(`Name: ${d.data.name}</br>Category: ${d.data.category}</br>Value: ${d.data.value}`)
+            .attr("data-value", `${d.data.value}`)
+            .style("left", (d3.pointer(e, svg)[0]) + "px")
+            .style("top", (d3.pointer(e, svg)[1]) + "px")
+    }
+
+    let mouseleave = function (e, d) {
+        tooltip.style("opacity", 0)
+    }
+
     // Draw the Rectangles
     svg
         .selectAll("rect")
@@ -79,6 +108,9 @@ Promise.all([
         .attr("data-name", (d) => d.data.name)
         .attr("data-category", (d) => d.data.category)
         .attr("data-value", (d) => d.data.value)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
 
     // Draw the text
     svg
@@ -88,10 +120,13 @@ Promise.all([
         .attr("x", function (d) { return d.x0 + 5 })
         .attr("y", function (d) { return d.y0 + 5 })
         .attr("fill", "black")
-        .attr("width", (d) => d.x1 - d.x0 - 15)
+        .attr("width", (d) => d.x1 - d.x0 - 10)
         .attr("height", (d) => d.y1 - d.y0 - 15)
         .style("font-size", "10px")
         .text((d) => d.data.name)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
 
     // Create svg for the legend
     const svgLegend = d3.select("#legend")
