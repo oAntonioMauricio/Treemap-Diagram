@@ -1,5 +1,5 @@
-const w = 1400;
-const h = 600;
+const w = 1300;
+const h = 500;
 const padding = 0;
 
 // Create svg
@@ -107,12 +107,19 @@ Promise.all([
         .range([250, w - 250])
 
     let xGenresAxis = d3.axisBottom(xGenresScale)
-
+        .tickSize(10)
 
     svgLegend.append("g")
         .attr("id", "x-genres-axis")
         .attr("transform", `translate(${0},${50})`)
         .call(xGenresAxis)
+        .call(g => g.select(".domain").remove())
+
+    // X Axis Labels Format
+    svgLegend
+        .selectAll("text")
+        .attr("y", 17)
+        .attr("font-size", 12)
 
     // Rects and text for the legend
     svgLegend
@@ -120,11 +127,11 @@ Promise.all([
         .data(genres)
         .join("rect")
         .attr("class", "legend-item")
-        .attr('x', (d) => xGenresScale(d) + 55)
+        .attr('x', (d) => xGenresScale(d) + 10)
         .attr('y', 25)
-        .attr("width", 20)
+        .attr("width", xGenresScale.bandwidth() - 20)
         .attr("height", 20)
         .attr("fill", (d) => selectColor(d))
-
+        .attr("margin", 20)
 
 })
