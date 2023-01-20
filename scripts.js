@@ -82,7 +82,7 @@ Promise.all([
 
     let mousemove = function (e, d) {
         tooltip
-            .html(`Name: ${d.data.name}</br>Category: ${d.data.category}</br>Value: ${d.data.value}`)
+            .html(`Name: ${d.data.name}</br></br>Category: ${d.data.category}</br></br>Value: ${d.data.value}`)
             .attr("data-value", `${d.data.value}`)
             .style("left", (d3.pointer(e, svg)[0]) + "px")
             .style("top", (d3.pointer(e, svg)[1]) + "px")
@@ -132,7 +132,7 @@ Promise.all([
     const svgLegend = d3.select("#legend")
         .append("svg")
         .attr("width", w)
-        .attr("height", h)
+        .attr("height", 60)
 
     // Scale for the legend
     let genres = ["Action", "Adventure", "Comedy", "Drama", "Animation", "Family", "Biography"];
@@ -146,7 +146,7 @@ Promise.all([
 
     svgLegend.append("g")
         .attr("id", "x-genres-axis")
-        .attr("transform", `translate(${0},${50})`)
+        .attr("transform", `translate(${0},${25})`)
         .call(xGenresAxis)
         .call(g => g.select(".domain").remove())
 
@@ -163,7 +163,7 @@ Promise.all([
         .join("rect")
         .attr("class", "legend-item")
         .attr('x', (d) => xGenresScale(d) + 10)
-        .attr('y', 25)
+        .attr('y', 0)
         .attr("width", xGenresScale.bandwidth() - 20)
         .attr("height", 20)
         .attr("fill", (d) => selectColor(d))
