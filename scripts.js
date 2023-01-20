@@ -75,7 +75,9 @@ Promise.all([
         .attr('width', function (d) { return d.x1 - d.x0; })
         .attr('height', function (d) { return d.y1 - d.y0; })
         .style("fill", (d) => selectColor(d.data.category))
-        
+        .attr("data-name", (d) => d.data.name)
+        .attr("data-category", (d) => d.data.category)
+        .attr("data-value", (d) => d.data.value)
 
     // Draw the text
     svg
@@ -87,6 +89,5 @@ Promise.all([
         .text(function (d) { return d.data.name })
         .attr("font-size", "10px")
         .attr("fill", "black")
-        .attr('width', function (d) { return d.x1 - d.x0; })
 
 })
