@@ -1,4 +1,4 @@
-const w = 1200;
+const w = 1400;
 const h = 600;
 const padding = 0;
 
@@ -22,7 +22,6 @@ Promise.all([
     // Then d3.treemap computes the position of each element of the hierarchy
     d3.treemap()
         .size([w, h])
-        .padding(1)
         (root)
 
     // Colors for the genres
@@ -75,6 +74,8 @@ Promise.all([
         .attr('width', function (d) { return d.x1 - d.x0; })
         .attr('height', function (d) { return d.y1 - d.y0; })
         .style("fill", (d) => selectColor(d.data.category))
+        .attr("stroke", "white")
+        .attr("stroke-width", 1)
         .attr("data-name", (d) => d.data.name)
         .attr("data-category", (d) => d.data.category)
         .attr("data-value", (d) => d.data.value)
@@ -91,5 +92,39 @@ Promise.all([
         .attr("height", (d) => d.y1 - d.y0 - 15)
         .style("font-size", "10px")
         .text((d) => d.data.name)
+
+    // Create svg for the legend
+    const svgLegend = d3.select("#legend")
+        .append("svg")
+        .attr("width", w)
+        .attr("height", h)
+
+    // Scale for the legend
+    let genres = ["Action", "Adventure", "Comedy", "Drama", "Animation", "Family", "Biography"];
+
+    xGenresScale = d3.scaleBand()
+        .domain(genres)
+        .range([250, w - 250])
+
+    let xGenresAxis = d3.axisBottom(xGenresScale)
+
+
+    svgLegend.append("g")
+        .attr("id", "x-genres-axis")
+        .attr("transform", `translate(${0},${50})`)
+        .call(xGenresAxis)
+
+    // Rects and text for the legend
+    svgLegend
+        .selectAll("rect")
+        .data(genres)
+        .join("rect")
+        .attr("class", "legend-item")
+        .attr('x', (d) => xGenresScale(d) + 55)
+        .attr('y', 25)
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("fill", (d) => selectColor(d))
+
 
 })
