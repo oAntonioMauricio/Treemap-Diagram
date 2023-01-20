@@ -81,13 +81,15 @@ Promise.all([
 
     // Draw the text
     svg
-        .selectAll("text")
+        .selectAll("foreignObject")
         .data(root.leaves())
-        .join("text")
+        .join("foreignObject")
         .attr("x", function (d) { return d.x0 + 5 })
-        .attr("y", function (d) { return d.y0 + 20 })
-        .text(function (d) { return d.data.name })
-        .attr("font-size", "10px")
+        .attr("y", function (d) { return d.y0 + 5 })
         .attr("fill", "black")
+        .attr("width", (d) => d.x1 - d.x0 - 15)
+        .attr("height", (d) => d.y1 - d.y0 - 15)
+        .style("font-size", "10px")
+        .text((d) => d.data.name)
 
 })
